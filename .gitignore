@@ -1,0 +1,32 @@
+# --- Python Derleme Dosyaları ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Sanal Ortamlar Kendi makinemize özeldir ---
+venv/
+.venv/
+env/
+
+# --- IDE Ayarları VSCode, PyCharm vs. kişisel ayarlardır ---
+.idea/
+.vscode/
+*.swp
+
+# --- Güvenlik ve Çevresel Değişkenler ASLA ATILMAZ ---
+.env
+.env.local
+
+# --- Veritabanı ve Loglar ---
+*.log
+*.sqlite3
+mysql_data/
+
+# --- Büyük Model Dosyaları Opsiyonel ---
+# Eğer 100MB üstündeyse Git LFS gerekir, şimdilik atabiliriz ama
+# bazen model dosyalarını repoda istemeyiz, S3'ten çekeriz.
+# Senin durumunda model küçükse bu satırı yoruma alabilirsin.
+# *.pkl
+
+# --- Jupyter Notebook Çıktıları ---
+.ipynb_checkpoints
