@@ -26,8 +26,7 @@ class PredictionResults:
     threshold_used: float       # Hangi eşik değerini kullandık? 0.7079=bu modelindeki en kararlı eşik değeri
     application_id: Optional[int] = None  # Veritabanına yazılınca ID alacak, başta yok None derken ,tahmin anında henüz veritabanına kayıt yapmadık, ID'miz yok.
     #Bu yüzden diyoruz ki: Bu alan tamsayı int olacak ama başlangıçta boş None olabilir.
-
-
+    
     #created_at: datetime = datetime.now fonskiyonunu kullanmak  neden mantıklı değil çünkü bu ilk Loan application nesnesi oluşturduğunda bundan sonraki hepsine onu atayacak, bu bir class attribute gibi davranır.
     #İnstance attribute gibi davranmasını istiyorsak şu:
     created_at: datetime = field(default_factory=datetime.now)
