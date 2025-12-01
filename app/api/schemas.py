@@ -1,4 +1,12 @@
 from pydantic import BaseModel
+from app.core.entities import (
+    GenderType, 
+    MaritalStatus, 
+    EducationLevel, 
+    EmploymentStatus, 
+    LoanPurpose, 
+    GradeType
+)
 
 class LoanRequest(BaseModel):
     annual_income:float
@@ -6,12 +14,12 @@ class LoanRequest(BaseModel):
     credit_score:int
     loan_amount:float
     interest_rate:float
-    gender:str
-    marital_status:str
-    education_level:str
-    employment_status:str
-    loan_purpose:str
-    grade_subgrade:str
+    gender: GenderType
+    marital_status: MaritalStatus
+    education_level: EducationLevel
+    employment_status: EmploymentStatus
+    loan_purpose: LoanPurpose
+    grade_subgrade: GradeType
 
 class LoanResponse(BaseModel):
     probability: float        
