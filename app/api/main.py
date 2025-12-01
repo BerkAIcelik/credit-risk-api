@@ -67,3 +67,6 @@ def predict_endpoint(request: LoanRequest, db: Session = Depends(get_db)):
         print(f"Sunucu Hatası: {e}")
         raise HTTPException(status_code=500, detail="Sunucu tarafında bir hata oluştu.")
 
+@app.get("/")
+def read_root():
+    return {"message": "Kredi Risk Tahmin API'sine Hoş Geldiniz! Dokümantasyon için /docs adresine gidin."}
