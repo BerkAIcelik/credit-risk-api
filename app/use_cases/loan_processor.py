@@ -12,7 +12,6 @@ class ProcessLoanApplication:
         self.loan_repository = loan_repository
 #aplplication bir loanapplication entities i yani loan application varlığı,result ise bir prediction result varlığı
 
-
     def _validate_application(self, application: LoanApplication):
 
         # dataclass'ın içindeki alanların listesini alıyoruz Reflection
@@ -24,9 +23,7 @@ class ProcessLoanApplication:
             if isinstance(value, (int, float)):
                 if value < 0:
                     raise ValueError(f"Hata: '{field.name}' alanı negatif olamaz! (Gelen: {value})")
-            else:
-                raise ValueError(f"Hata: '{field.name}' alanı sayı olmalı! Lütfen float için nokta (.) kullanın. (Gelen: {value})")
-
+            
             
         
         # Ekstra Özel Kurallar Sıfır Kontrolü vb.
@@ -40,7 +37,7 @@ class ProcessLoanApplication:
         #resultun neden predicitonresults nesnesi olduğu buada kanıtlı prediction fonksiyonu sayesinde
         result=self.model_service.predict(application)
 
-        save_id = self.loan_reporsitory.save(application,result)
+        save_id = self.loan_repository.save(application,result)
 
         result.application_id=save_id
 

@@ -11,7 +11,7 @@ from app.use_cases.loan_processor import ProcessLoanApplication
 app = FastAPI(title='Credit Risk API')
 Base.metadata.create_all(bind=engine)
 
-MODEL_DIR= "app/infrasturcture/model_artifacts"
+MODEL_DIR= "app\infrastructure\model_artifacts"
 
 try:
     # Model servisini global bir değişken olarak tutuyoruz

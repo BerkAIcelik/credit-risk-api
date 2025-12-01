@@ -1,6 +1,6 @@
 #Python ve mysql arasında bir tercüman inşaa ediyoruz burada
 
-from sqlalchemy import Column,Float,Integer,String
+from sqlalchemy import Column,Float,Integer,String,DateTime
 from app.infrastructure.database import Base
 from datetime import datetime
 
@@ -21,10 +21,9 @@ class LoanApplicationModel(Base):
     loan_purpose = Column(String(25))
     grade_subgrade = Column(String(10))
 
-     # Modelin ne cevap verdiğini de kaydediyoruz (Denetim/Audit için).
-    prediction_probability = Column(Float)  # Örn: 0.85
-    prediction_decision = Column(String(10)) # "ONAY" / "RED"
-    threshold_used = Column(Float)          # O an kullanılan eşik (0.7079)
-    
+     # Modelin ne cevap verdiğini de kaydediyoruz
+    prediction_probability = Column(Float)  
+    prediction_decision = Column(String(10)) 
+    threshold_used = Column(Float)          
 
-    
+    created_at = Column(DateTime, default=datetime.now)

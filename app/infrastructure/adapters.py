@@ -16,7 +16,7 @@ class CatBoostAdapter(IModelService):
         #bir tane catboostadapter nesnesi oluşsun ve predict methoduyla defalaraca aynı model üstünden sorgu yapılsın
         #adapter = catbootstadapter adapter.predict gibi düşün ve içine süekli parametre yazdığını
         self.artifacts_dir = artifacts_dir
-        print(f"model dosyaları yüklemiyor {artifacts_dir}")
+        print(f"model dosyaları yükleniyor {artifacts_dir}")
     
         # 1. Modeli Yükle
         model_path = os.path.join(artifacts_dir, "final_catboost_model.pkl")
@@ -28,7 +28,7 @@ class CatBoostAdapter(IModelService):
             self.config = json.load(f)
             self.threshold = self.config.get("threshold", 0.5) # Bulamazsa 0.5 kullan
             
-        # 3. Feature Listesini Yükle (Reindex için şart)
+        # 3. Feature Listesini Yükle Reindex için şart
         features_path = os.path.join(artifacts_dir, "features.json")
         with open(features_path, "r") as f:
             self.feature_names = json.load(f)

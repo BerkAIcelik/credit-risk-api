@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker , declarative_base
 # Bu adres, Python'un MySQL ile konuşması için gereken telefon numarası gibidir.
 # Yapısı şöyledir: mysql+pymysql://<KULLANICI>:<SIFRE>@<ADRES>:<PORT>/<VERITABANI_ADI>
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:password@localhost:3306/loan_db"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/loan_db"
 
 #Engine, veritabanı ile Python arasındaki fiziksel bağlantıyı yöneten nesnedir.
 # echo=True yaptık ki, arka planda çalışan SQL sorgularını terminalde görebilelim
@@ -28,7 +28,7 @@ Base = declarative_base()
 # Temel amacı, her gelen API isteği için veritabanı bağlantısını güvenle açıp kapatmaktır.
 def get_db():
     #session açtık
-
+    #yeni bir ağ bağlantısı kurduk mysql sunucusu ve uygulama arasında
     db=SessionLocal()
     try:
         # 'yield' anahtar kelimesi, 'db' Session nesnesini çağıran FastAPI Endpoint'ine iletir.
