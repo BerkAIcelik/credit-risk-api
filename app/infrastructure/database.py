@@ -1,12 +1,19 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker , declarative_base
+import os
 
+#os.getenv "ANAHTAR", "VARSAYILAN"
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_USER = "root"
+DB_PASSWORD = os.getenv("DB_PASSWORD", "root") 
+DB_NAME = "loan_db"#database ikisinde de aynı isimde hem dockerda hem lokalde
 
 #Veritabanı Bağlantı Adresi Connection String
 # Bu adres, Python'un MySQL ile konuşması için gereken telefon numarası gibidir.
-# Yapısı şöyledir: mysql+pymysql://<KULLANICI>:<SIFRE>@<ADRES>:<PORT>/<VERITABANI_ADI>
+# Yapısı şöyledir: mysql+pymysql://<KULLANICI>:<SIFRE>@<ADRES-Host>:<PORT>/<VERITABANI_ADI>
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/loan_db"
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 #Engine, veritabanı ile Python arasındaki fiziksel bağlantıyı yöneten nesnedir.
 # echo=True yaptık ki, arka planda çalışan SQL sorgularını terminalde görebilelim

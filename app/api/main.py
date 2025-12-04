@@ -1,17 +1,28 @@
 from fastapi import FastAPI,HTTPException,Depends
 from sqlalchemy.orm import Session
-
 from app.infrastructure.database import get_db,engine,Base
 from app.api.schemas import LoanRequest,LoanResponse
 from app.infrastructure.adapters import CatBoostAdapter
 from app.infrastructure.db_repository import MySQLRepository
 from app.core.entities import LoanApplication
 from app.use_cases.loan_processor import ProcessLoanApplication
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
 
 app = FastAPI(title='Credit Risk API')
 Base.metadata.create_all(bind=engine)
 
-MODEL_DIR= "app\infrastructure\model_artifacts"
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+# Projenin kök dizinini buluyoruz (main.py'nin 2 üst klasörü: /app)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Tam yolu oluşturuyoruz: /app/app/infrastructure/model_artifacts
+MODEL_DIR = os.path.join(BASE_DIR, "app", "infrastructure", "model_artifacts")
+
+print(f"📂 Model Dizini: {MODEL_DIR}")
 
 try:
     # Model servisini global bir değişken olarak tutuyoruz
@@ -69,4 +80,4 @@ def predict_endpoint(request: LoanRequest, db: Session = Depends(get_db)):
 
 @app.get("/")
 def read_root():
-    return {"message": "Kredi Risk Tahmin API'sine Hoş Geldiniz! Dokümantasyon için /docs adresine gidin."}
+     return FileResponse('app/static/index.html')

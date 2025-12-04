@@ -1,16 +1,31 @@
 # Kredi Risk Tahmin Sistemi (Credit Risk Prediction System)
 
-Bu proje, bankacılık süreçlerinde kredi değerlendirmelerini otomatize etmek için geliştirilmiş, Yapay Zeka destekli, **Clean Architecture (Onion Architecture)** prensiplerine uygun, ölçeklenebilir bir backend API servisidir.
+Bu proje, bankacılık süreçlerinde kredi değerlendirmelerini otomatize etmek için geliştirilmiş, Yapay Zeka destekli, **Clean Architecture (Onion Architecture)** prensiplerine uygun, ölçeklenebilir bir backend API servisidir. Frontend sadece güzel görsellik için eklenmiştir.
 
 ## 🚀 Proje Hakkında
 
-Sistem, kullanıcıdan gelen finansal ve demografik verileri (Gelir, Borç Oranı, Kredi Geçmişi vb.) alır ve arka planda çalışan optimize edilmiş **CatBoost** makine öğrenmesi modeli ile anlık kredi risk değerlendirmesi yapar.
+Sistem, kullanıcıdan gelen finansal ve demografik verileri (Gelir, Borç Oranı, Kredi Geçmişi vb.) alır ve arka planda çalışan optimize edilmiş **CatBoost** makine öğrenmesi modeli ile anlık kredi risk değerlendirmesi yapar.Yani amaç, bir makine öğrenmesi modelinin eğitiminden (Training) canlıya alınmasına (Deployment) kadar olan ML Engineering sürecini uçtan uca yönetmektir.
 
 **Temel Özellikler:**
 *   **Yapay Zeka Destekli:** Yüksek doğruluklu CatBoost modeli ile kredi onay/ret tahminleri.
 *   **Clean Architecture:** Core, Use Cases, Infrastructure ve API katmanları ile modüler, test edilebilir ve bakımı kolay yapı.
 *   **Yüksek Performans:** **FastAPI** framework'ü ile hızlı ve asenkron API yanıtları.
 *   **Veri Kalıcılığı:** Değerlendirme sonuçlarının ve başvuru verilerinin **MySQL** veritabanında saklanması.
+*   **Konteynerizasyon:** Docker ve **Docker** Compose ile API ve Veritabanı servislerinin tek komutla yönetilmesi.
+
+## 🔬 Model Geliştirme Süreci (Research & Training)
+
+**Bu notebook şunları içerir:**
+* Veri Görselleştirme
+* Feature Engineering 
+* Optuna ile Hiperparametre Optimizasyonu
+* SHAP ile Model Açıklanabilirliği (Explainability)
+* Threshold Tuning (Recall Optimizasyonu)
+
+Bu projenin arkasındaki veri analizi, özellik mühendisliği (Feature Engineering) ve model eğitim süreçlerini incelemek isterseniz, Jupyter Notebook dosyalarını inceleyebilirsiniz:
+👉 **[Model Eğitim ve Analiz Notları](notebooks)**
+
+
 
 ## 🏗 Mimari Yapı (Clean Architecture)
 
@@ -48,13 +63,24 @@ D:\credit-risk-api\
 │   │   ├── entities.py
 │   │   └── interfaces.py
 │   ├── infrastructure\ # Dış Kaynak Adaptörleri (Infrastructure Layer)
+│   │   ├── model_artifacts\ # Eğitilmiş Model Dosyaları
 │   │   ├── adapters.py      # ML Model Adaptörü
 │   │   ├── database.py      # DB Bağlantısı
 │   │   ├── db_models.py     # ORM Modelleri
-│   │   ├── db_repository.py # Veri Erişim Katmanı
-│   │   └── model_artifacts\ # Eğitilmiş Model Dosyaları
+│   │   └── db_repository.py # Veri Erişim Katmanı
+│   ├── static\         # Frontend Arayüz Dosyaları
+│   │   ├── css\
+│   │   │   └── style.css
+│   │   ├── js\
+│   │   │   └── script.js
+│   │   └── index.html
 │   └── use_cases\      # İş Mantığı (Application Layer)
 │       └── loan_processor.py
+├── notebooks\          # Veri Analizi ve Model Eğitimi (Jupyter)
+├── docker-compose.yml  # Docker Servis Tanımları
+├── Dockerfile          # Docker İmaj Tanımı
+├── Frontend_Specifications.md # Frontend Teknik Gereksinimleri
+├── RULES.md            # Geliştirme Kuralları ve Kısıtlamalar
 ├── requirements.txt    # Proje Bağımlılıkları
 └── README.md           # Proje Dokümantasyonu
 ```
@@ -121,3 +147,24 @@ Kredi risk tahminini almak için bu endpoint'e aşağıdaki formatta bir JSON is
   
 }
 ```
+
+## Kurulum ve Çalıştırma (Docker ile)
+
+Bu projeyi kendi bilgisayarınızda çalıştırmak için Python veya MySQL kurmanıza gerek yoktur. Sadece Docker Desktop yüklü olması yeterlidir.
+
+1.  **Repoyu Klonlayın**
+    ```bash
+    git clone [https://github.com/KULLANICI_ADIN/credit-risk-api.git](https://github.com/KULLANICI_ADIN/credit-risk-api.git)
+    cd credit-risk-api
+    ```
+
+2.  **Sistemi Başlatın**
+    Docker Compose, API ve Veritabanı servislerini oluşturup birbirine bağlayacaktır.
+    ```bash
+    docker-compose up --build
+    ```
+
+3.  **Erişin**
+    Sistem ayağa kalktığında aşağıdaki adreslerden erişebilirsiniz:
+    *   API Dokümantasyonu (Swagger): `http://localhost:8000/docs` - Önerilen test yöntemi.
+    *   Test Arayüzü (Web UI): `http://localhost:8000` - API yanıtlarını görselleştirmek için basit arayüz.

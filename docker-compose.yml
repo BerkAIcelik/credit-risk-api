@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  
+  db:
+    image: mysql:8.0.44  # Biz yazmadık, Docker Hub'dan hazır indiriyoruz.
+    container_name: mysql_container
+    restart: always   # Çökerse otomatik yeniden başla.
+    environment:
+      # MySQL ilk açıldığında bu şifreyle ve bu isimle veritabanı kuracak.
+      MYSQL_ROOT_PASSWORD: root  
+      MYSQL_DATABASE: loan_db
+    ports:
+      # Bilgisayarının 3307 portunu, koteyner 3306 portuna bağla. Çünkü mysql deafultu o
+      # 3307 olmasının sebebi mysql bu bilgisayarda yine 3306 yı tutuyor
+      # Yapı: BENİM_BİLGİSAYARIN HOST : KONTEYNERİN_İÇİ GUEST
+      - "3307:3306"
+    volumes:
+    #konteynerlar geçici
+      # Veriler uçmasın diye Docker'ın güvenli kasasına yani Volume bağlıyoruz.
+      #mysql_datayı-named volume diyelim buna bunu mount ediyoruz yani
+      - mysql_data:/var/lib/mysql
+    networks:
+      - loan_network
+# Docker, MySQL'e düzenli olarak "Hayatta mısın?" (ping) diye soracak.
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s   # Her 10 saniyede bir kontrol et
+      timeout: 5s     # Cevap 5 saniyede gelmezse başarısız say
+      retries: 5      # 5 kere başarısız olursa "Unhealthy" ilan et
+
+
+  api:
+    build: .  # "Git şu anki klasördeki Dockerfile'ı oku ve imajı oluştur"
+    container_name: fastapi_container
+    ports:
+      - "8000:8000" # Tarayıcıdan 8000 ile gireceğiz.
+    environment:
+      # database.py dosyasına "Bak MySQL artık localhost'ta değil, 'db' isimli makinede" diyoruz.
+      - DB_HOST=db 
+      - DB_PASSWORD=root
+    networks:
+      - loan_network
+    
+    depends_on:
+      db:
+        condition: service_healthy # Sadece "started" değil, "healthy" olunca başla!    
+# Kalıcı Depolama Alanı Tanımı
+volumes:
+  mysql_data:
+
+# Özel İletişim Ağı Tanımı
+networks:
+  loan_network:
